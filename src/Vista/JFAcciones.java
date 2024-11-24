@@ -33,8 +33,10 @@ public class JFAcciones extends javax.swing.JFrame {
         jBRegistrarAcciones = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("MENÚ");
         setLocation(new java.awt.Point(0, 0));
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Gestion de Acciones Bolsa de Valores ");
 
         jTableAcciones.setModel(new javax.swing.table.DefaultTableModel(
@@ -50,6 +52,7 @@ public class JFAcciones extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTableAcciones);
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Acciones:");
 
         jBRegistrarAcciones.setText("Registrar Acción");
@@ -63,16 +66,16 @@ public class JFAcciones extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(0, 674, Short.MAX_VALUE))
+                        .addGap(0, 669, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addGap(18, 18, 18)
                         .addComponent(jBRegistrarAcciones)
                         .addGap(15, 15, 15))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(276, 276, 276)
+                .addGap(224, 224, 224)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -85,7 +88,7 @@ public class JFAcciones extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBRegistrarAcciones, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
