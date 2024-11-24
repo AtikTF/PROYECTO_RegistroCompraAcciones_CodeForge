@@ -18,6 +18,7 @@ public class Conexion {
             con = DriverManager.getConnection(url, user, password);
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "No se ha podido conectar a la base de datos", "Conexión", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
         return con;
     }
