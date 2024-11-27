@@ -88,14 +88,6 @@ public class Accion {
         }
     }
 
-    public boolean esTextoValido(String texto) {
-        if (texto == null) {
-            return false;
-        }
-        String regex = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]{1,50}$";
-        return texto.matches(regex);
-    }
-
     public boolean esValorValido(double numero) {
         return numero > 0;
     }
@@ -112,5 +104,16 @@ public class Accion {
         LocalDate fechaActual = LocalDate.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return fechaActual.format(formato);
+    }
+
+    public double calcularGananciaPerdida(int cantidad, double precioCompra, double precioActual) {
+        double precioReal = valorPorUnidad(cantidad, precioCompra);
+        double diferencia = (precioReal - precioCompra);
+        return Math.round(diferencia * 100.0) / 100.0;
+    }
+
+    public double valorPorUnidad(int cantidad, double precioCompra) {
+        double precioUnidad = precioCompra / cantidad;
+        return Math.round(precioUnidad * 100.0) / 100.0;
     }
 }

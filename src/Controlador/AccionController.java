@@ -2,6 +2,7 @@ package Controlador;
 
 import BD.AccionBD;
 import Modelo.Accion;
+import Modelo.AccionAPI;
 import Vista.JFAcciones;
 import Vista.JFDetalleAccion;
 import Vista.JFRegistrarAccion;
@@ -18,13 +19,15 @@ public class AccionController implements ActionListener {
     private JFRegistrarAccion jfRegistrarAccion;
     private JFDetalleAccion jfDetalleAccion;
     private Accion accion;
+    private AccionAPI accionAPI;
 
-    public AccionController(AccionBD accionBD, JFAcciones jfAcciones, JFRegistrarAccion jfRegistrarAccion, JFDetalleAccion jfDetalleAccion, Accion accion) {
+    public AccionController(AccionBD accionBD, JFAcciones jfAcciones, JFRegistrarAccion jfRegistrarAccion, JFDetalleAccion jfDetalleAccion, Accion accion, AccionAPI accionAPI) {
         this.jfAcciones = jfAcciones;
         this.accionBD = accionBD;
         this.jfRegistrarAccion = jfRegistrarAccion;
         this.jfDetalleAccion = jfDetalleAccion;
         this.accion = accion;
+        this.accionAPI = accionAPI;
 
         this.jfAcciones.jBRegistrarAcciones.addActionListener(this);
         this.jfRegistrarAccion.jBGuardarAccion.addActionListener(this);
@@ -36,17 +39,34 @@ public class AccionController implements ActionListener {
             public void mouseClicked(MouseEvent e) {
                 int filaSeleccionada = jfAcciones.jTableAcciones.getSelectedRow();
                 if (filaSeleccionada != -1) {
+                    
                     int idCompra = Integer.parseInt(jfAcciones.jTableAcciones.getValueAt(filaSeleccionada, 0).toString());
                     Accion accionSeleccionada = new Accion();
                     accionSeleccionada = accionBD.obtenerCompraPorId(idCompra);
+                    
                     jfAcciones.dispose();
                     jfDetalleAccion.setVisible(true);
                     jfDetalleAccion.setLocationRelativeTo(null);
+                    
                     jfDetalleAccion.jTNombreD.setText(String.valueOf(accionSeleccionada.getNombre_accion()));
                     jfDetalleAccion.jTCantidadD.setText(String.valueOf(accionSeleccionada.getCantidad()));
                     jfDetalleAccion.jTfechaCompraD.setText(String.valueOf(accionSeleccionada.getFecha_compra()));
                     jfDetalleAccion.jTValorCompraD.setText(String.valueOf(accionSeleccionada.getValor()));
                     jfDetalleAccion.jTFechaActualD.setText(accion.obtenerFechaActual());
+                    jfDetalleAccion.jTValorActualD.setText(String.valueOf(accionAPI.obtenerPrecioActual(jfDetalleAccion.jTNombreD.getText())));
+                    
+                    double valorActual = Double.parseDouble(jfDetalleAccion.jTValorActualD.getText());
+                    double valorCompra = Double.parseDouble(jfDetalleAccion.jTValorCompraD.getText());
+                    int cantidad = Integer.parseInt(jfDetalleAccion.jTCantidadD.getText());
+                    jfDetalleAccion.jTValorUnidadD.setText(String.valueOf(accion.valorPorUnidad(cantidad, valorCompra)));
+                    
+                    if (accion.calcularGananciaPerdida(cantidad,valorCompra, valorActual) > 0) {
+                        jfDetalleAccion.jTGananciaA.setText(String.valueOf(accion.calcularGananciaPerdida(cantidad,valorCompra, valorActual)));
+                        jfDetalleAccion.jTPerdidaA.setText("0.0");
+                    }else{
+                        jfDetalleAccion.jTPerdidaA.setText(String.valueOf(accion.calcularGananciaPerdida(cantidad,valorCompra, valorActual)));
+                        jfDetalleAccion.jTGananciaA.setText("0.0");
+                    }
                 }
             }
         });
@@ -72,13 +92,13 @@ public class AccionController implements ActionListener {
                 return;
             }
 
-            if (!accion.esTextoValido(nombreAccion)) {
-                JOptionPane.showMessageDialog(null, "El nombre ingresado no es valido: Ingresar solo letras.");
+            if (!accionAPI.validarNombreEmpresa(nombreAccion)) {
+                JOptionPane.showMessageDialog(null, "Ingresar un tickers valido de una empresa");
                 return;
             }
 
             if (!accion.esValorValido(valor)) {
-                JOptionPane.showMessageDialog(null, "Ingresar solo numeros positivos");
+                JOptionPane.showMessageDialog(null, "Ingresar solo numeros positivos y diferentes de cero");
                 return;
             }
 
@@ -107,7 +127,8 @@ public class AccionController implements ActionListener {
         if (e.getSource() == jfRegistrarAccion.jBSalirA) {
             jfRegistrarAccion.dispose();
             jfAcciones.setVisible(true);
-            accionBD.mostrarCompras(jfAcciones.jTableAcciones);
+            int id = Integer.parseInt(jfAcciones.jTMostrarID.getText());
+            accionBD.mostrarCompras(jfAcciones.jTableAcciones, id);
         }
 
         if (e.getSource() == jfDetalleAccion.jBSalirD) {

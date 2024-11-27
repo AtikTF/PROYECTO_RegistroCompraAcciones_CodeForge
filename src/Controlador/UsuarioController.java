@@ -3,15 +3,14 @@ package Controlador;
 import BD.AccionBD;
 import BD.UsuarioBD;
 import Modelo.Accion;
+import Modelo.AccionAPI;
 import Modelo.Usuario;
 import Vista.JFAcciones;
 import Vista.JFDetalleAccion;
 import Vista.JFLogin;
 import Vista.JFRegistrarAccion;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class UsuarioController implements ActionListener {
@@ -43,7 +42,7 @@ public class UsuarioController implements ActionListener {
 
                 int id = usuarioBD.obtenerIdUsuario(usuarioI, contrasenia);
                 jfAcciones.jTMostrarID.setText(String.valueOf(id));
-                accionBD.mostrarCompras(jfAcciones.jTableAcciones);
+                accionBD.mostrarCompras(jfAcciones.jTableAcciones ,id);
                 jfLogin.dispose();
                 jfAcciones.setVisible(true);
 
@@ -57,7 +56,8 @@ public class UsuarioController implements ActionListener {
         JFRegistrarAccion jfRegistrarAccion = new JFRegistrarAccion();
         JFDetalleAccion jfDetalleAccion = new JFDetalleAccion();
         Accion accion = new Accion();
-        AccionController accionController = new AccionController(accionBD, jfAcciones, jfRegistrarAccion, jfDetalleAccion, accion);
+        AccionAPI accionAPI = new AccionAPI();
+        AccionController accionController = new AccionController(accionBD, jfAcciones, jfRegistrarAccion, jfDetalleAccion, accion, accionAPI);
         jfAcciones.setLocationRelativeTo(null);
         jfRegistrarAccion.setLocationRelativeTo(null);
         jfDetalleAccion.setLocationRelativeTo(null);
