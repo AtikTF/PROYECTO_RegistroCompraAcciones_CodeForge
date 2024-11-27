@@ -108,4 +108,9 @@ public class Accion {
         return texto.matches(regex);
     }
 
+    public String obtenerFechaActual() {
+        LocalDate fechaActual = LocalDate.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return fechaActual.format(formato);
+    }
 }

@@ -46,6 +46,7 @@ public class AccionController implements ActionListener {
                     jfDetalleAccion.jTCantidadD.setText(String.valueOf(accionSeleccionada.getCantidad()));
                     jfDetalleAccion.jTfechaCompraD.setText(String.valueOf(accionSeleccionada.getFecha_compra()));
                     jfDetalleAccion.jTValorCompraD.setText(String.valueOf(accionSeleccionada.getValor()));
+                    jfDetalleAccion.jTFechaActualD.setText(accion.obtenerFechaActual());
                 }
             }
         });
@@ -54,15 +55,16 @@ public class AccionController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jfAcciones.jBRegistrarAcciones) {
+            jfRegistrarAccion.jTidU.setText(jfAcciones.jTMostrarID.getText());
             jfAcciones.setVisible(false);
             jfRegistrarAccion.setVisible(true);
-            //accionBD.mostrarCompras(jfAcciones.jTableAcciones);
         }
 
         if (e.getSource() == jfRegistrarAccion.jBGuardarAccion) {
             String nombreAccion = jfRegistrarAccion.jTNombreA.getText();
             String fechaCompra = jfRegistrarAccion.jTFechaCompraA.getText();
             String cantidadTexto = jfRegistrarAccion.jTCantidadA.getText();
+            int id = Integer.parseInt(jfAcciones.jTMostrarID.getText());
             double valor = Double.parseDouble(jfRegistrarAccion.jTValorA.getText());
 
             if (!accion.esFechaValida(fechaCompra)) {
@@ -83,10 +85,14 @@ public class AccionController implements ActionListener {
             if (accion.esCantidadValido(cantidadTexto)) {
                 int cantidad  = Integer.parseInt(cantidadTexto);
                 
-                Accion nuevaAccion = new Accion(1, nombreAccion, fechaCompra, cantidad, valor);
+                Accion nuevaAccion = new Accion(id, nombreAccion, fechaCompra, cantidad, valor);
 
                 boolean registroExitoso = accionBD.registrarCompra(nuevaAccion);
                 if (registroExitoso) {
+                    jfRegistrarAccion.jTCantidadA.setText("");
+                    jfRegistrarAccion.jTNombreA.setText("");
+                    jfRegistrarAccion.jTFechaCompraA.setText("");
+                    jfRegistrarAccion.jTValorA.setText("");
                     JOptionPane.showMessageDialog(null, "Se registró con éxito la nueva acción.");
                 } else {
                     JOptionPane.showMessageDialog(null, "Error al registrar la nueva acción.");
@@ -101,6 +107,7 @@ public class AccionController implements ActionListener {
         if (e.getSource() == jfRegistrarAccion.jBSalirA) {
             jfRegistrarAccion.dispose();
             jfAcciones.setVisible(true);
+            accionBD.mostrarCompras(jfAcciones.jTableAcciones);
         }
 
         if (e.getSource() == jfDetalleAccion.jBSalirD) {
