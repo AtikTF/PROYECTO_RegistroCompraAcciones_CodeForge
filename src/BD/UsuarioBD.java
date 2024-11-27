@@ -1,35 +1,53 @@
 package BD;
 
-import Modelo.Usuario;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 public class UsuarioBD {
 
-    private Connection conexion;
-
-    // Constructor que recibe una conexión
-    public UsuarioBD(Connection conexion) {
-        this.conexion = conexion;
-    }
-
-    // Método para obtener un usuario por nombre de usuario
-    public Usuario obtenerUsuarioPorNombre(String nombreUsuario) {
+    public boolean validarExistencia(String nombreUsuario, String contrasenia) {
+        PreparedStatement ps = null;
+        Connection con = Conexion.getConexion();
+        ResultSet rs;
+        String sql = "SELECT * FROM USUARIOS WHERE NOMBRE_USUARIO = ? AND CONTRASEÑA = ?";
         try {
-            String sql = "SELECT * FROM usuarios WHERE nombre_usuario = ?";
-            PreparedStatement stmt = conexion.prepareStatement(sql);
-            stmt.setString(1, nombreUsuario);
-            ResultSet rs = stmt.executeQuery();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, nombreUsuario);
+            ps.setString(2, contrasenia);
 
+            rs = ps.executeQuery();
             if (rs.next()) {
-                return new Usuario(
-                    rs.getInt("id"),
-                    rs.getString("nombre_usuario"),
-                    rs.getString("contraseña")
-                );
+                return true;
             }
+
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return null;
     }
+
+    public int obtenerIdUsuario(String nombreUsuario, String contrasenia) {
+        PreparedStatement ps = null;
+        Connection con = Conexion.getConexion();
+        ResultSet rs = null;
+        String sql = "SELECT id FROM USUARIOS WHERE NOMBRE_USUARIO = ? AND CONTRASEÑA = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, nombreUsuario);
+            ps.setString(2, contrasenia);
+
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al obtener el ID del usuario");
+        } 
+        return -1;
+    }
+
 }

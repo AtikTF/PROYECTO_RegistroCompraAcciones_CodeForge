@@ -6,7 +6,9 @@ public class Usuario {
     private String nombreUsuario;
     private String contraseña;
 
-    // Constructor, getters y setters
+    public Usuario() {
+    }
+
     public Usuario(int id, String nombreUsuario, String contraseña) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
@@ -17,11 +19,25 @@ public class Usuario {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getNombreUsuario() {
         return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
     public String getContraseña() {
         return contraseña;
     }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+    
+    
 }
