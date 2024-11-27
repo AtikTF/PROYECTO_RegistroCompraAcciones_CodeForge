@@ -31,12 +31,12 @@ public class AccionBD {
         }
     }
 
-    public void mostrarCompras(JTable tabla) {
+    public void mostrarCompras(JTable tabla, int idUsuario) {
         Connection con = Conexion.getConexion();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        String sql = "SELECT id, id_usuario, nombre_accion, fecha_compra, cantidad, valor FROM compras";
+        String sql = "SELECT id, id_usuario, nombre_accion, fecha_compra, cantidad, valor FROM compras WHERE id_usuario = ?";
 
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("ID");
@@ -50,6 +50,7 @@ public class AccionBD {
 
         try {
             ps = con.prepareStatement(sql);
+            ps.setInt(1, idUsuario); // Se establece el parámetro para el ID del usuario
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -63,7 +64,7 @@ public class AccionBD {
                 modelo.addRow(fila);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al mostrar los datos de compras");
+            JOptionPane.showMessageDialog(null, "Error al mostrar los datos de compras: " + e.getMessage());
         }
     }
 
@@ -92,7 +93,7 @@ public class AccionBD {
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al obtener los datos de la compra", "Error", JOptionPane.ERROR_MESSAGE);
-        } 
+        }
         return accion;
     }
 }
