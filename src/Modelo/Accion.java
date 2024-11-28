@@ -106,14 +106,18 @@ public class Accion {
         return fechaActual.format(formato);
     }
 
-    public double calcularGananciaPerdida(int cantidad, double precioCompra, double precioActual) {
-        double precioReal = valorPorUnidad(cantidad, precioCompra);
-        double diferencia = (precioReal - precioCompra);
+    public double valorActualTotal(int cantidad, double precioActual) {
+        double precioActualTotal = precioActual * cantidad;
+        return Math.round(precioActualTotal * 100.0) / 100.0;
+    }
+    
+    public double gananciaPerdida(double valorActual, double valorCompra){
+        double diferencia = valorActual - valorCompra;
         return Math.round(diferencia * 100.0) / 100.0;
     }
-
-    public double valorPorUnidad(int cantidad, double precioCompra) {
-        double precioUnidad = precioCompra / cantidad;
-        return Math.round(precioUnidad * 100.0) / 100.0;
+    
+    public double gananciaPerdidaPorcentaje(double valorActual, double valorCompra){
+        double porcentaje = (gananciaPerdida(valorActual, valorCompra)/valorCompra)*100;
+        return Math.round(porcentaje * 100.0) / 100.0;
     }
 }

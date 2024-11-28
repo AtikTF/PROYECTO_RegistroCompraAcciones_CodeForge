@@ -53,19 +53,25 @@ public class AccionController implements ActionListener {
                     jfDetalleAccion.jTfechaCompraD.setText(String.valueOf(accionSeleccionada.getFecha_compra()));
                     jfDetalleAccion.jTValorCompraD.setText(String.valueOf(accionSeleccionada.getValor()));
                     jfDetalleAccion.jTFechaActualD.setText(accion.obtenerFechaActual());
-                    jfDetalleAccion.jTValorActualD.setText(String.valueOf(accionAPI.obtenerPrecioActual(jfDetalleAccion.jTNombreD.getText())));
                     
-                    double valorActual = Double.parseDouble(jfDetalleAccion.jTValorActualD.getText());
+                    double valorActual = accionAPI.obtenerPrecioActual(jfDetalleAccion.jTNombreD.getText());
                     double valorCompra = Double.parseDouble(jfDetalleAccion.jTValorCompraD.getText());
                     int cantidad = Integer.parseInt(jfDetalleAccion.jTCantidadD.getText());
-                    jfDetalleAccion.jTValorUnidadD.setText(String.valueOf(accion.valorPorUnidad(cantidad, valorCompra)));
+                    double precioActualTotal = accion.valorActualTotal(cantidad, valorActual);
+                    jfDetalleAccion.jTValorActualD.setText(String.valueOf(precioActualTotal));
+                    double gananciaPerdida = accion.gananciaPerdida(precioActualTotal, valorCompra);
+                    double gananciaPerdidaPorcentaje = accion.gananciaPerdidaPorcentaje(precioActualTotal, valorCompra);
                     
-                    if (accion.calcularGananciaPerdida(cantidad,valorCompra, valorActual) > 0) {
-                        jfDetalleAccion.jTGananciaA.setText(String.valueOf(accion.calcularGananciaPerdida(cantidad,valorCompra, valorActual)));
+                    if (gananciaPerdida>=0) {
+                        jfDetalleAccion.jTGananciaA.setText(String.valueOf(gananciaPerdida));
+                        jfDetalleAccion.jTGananciaPorcentaje.setText(String.valueOf(gananciaPerdidaPorcentaje));
                         jfDetalleAccion.jTPerdidaA.setText("0.0");
-                    }else{
-                        jfDetalleAccion.jTPerdidaA.setText(String.valueOf(accion.calcularGananciaPerdida(cantidad,valorCompra, valorActual)));
+                        jfDetalleAccion.jTPerdidaPorcentaje.setText("0.0");
+                    } else{
+                        jfDetalleAccion.jTPerdidaA.setText(String.valueOf(gananciaPerdida));
+                        jfDetalleAccion.jTPerdidaPorcentaje.setText(String.valueOf(gananciaPerdidaPorcentaje));
                         jfDetalleAccion.jTGananciaA.setText("0.0");
+                        jfDetalleAccion.jTGananciaPorcentaje.setText("0.0");
                     }
                 }
             }
