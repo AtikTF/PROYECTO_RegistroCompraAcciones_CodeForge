@@ -6,7 +6,6 @@ import Modelo.Accion;
 import Modelo.AccionAPI;
 import Modelo.Usuario;
 import Vista.JFAcciones;
-import Vista.JFDetalleAccion;
 import Vista.JFLogin;
 import Vista.JFRegistrarAccion;
 import java.awt.event.ActionEvent;
@@ -54,12 +53,10 @@ public class UsuarioController implements ActionListener {
 
     public void iniciar() {
         JFRegistrarAccion jfRegistrarAccion = new JFRegistrarAccion();
-        JFDetalleAccion jfDetalleAccion = new JFDetalleAccion();
         Accion accion = new Accion();
         AccionAPI accionAPI = new AccionAPI();
-        AccionController accionController = new AccionController(accionBD, jfAcciones, jfRegistrarAccion, jfDetalleAccion, accion, accionAPI);
+        AccionController accionController = new AccionController(accionBD, jfAcciones, jfRegistrarAccion, accion, accionAPI);
         jfAcciones.setLocationRelativeTo(null);
         jfRegistrarAccion.setLocationRelativeTo(null);
-        jfDetalleAccion.setLocationRelativeTo(null);
     }
 }

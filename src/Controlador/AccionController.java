@@ -4,12 +4,9 @@ import BD.AccionBD;
 import Modelo.Accion;
 import Modelo.AccionAPI;
 import Vista.JFAcciones;
-import Vista.JFDetalleAccion;
 import Vista.JFRegistrarAccion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
 
 public class AccionController implements ActionListener {
@@ -17,65 +14,20 @@ public class AccionController implements ActionListener {
     private AccionBD accionBD;
     private JFAcciones jfAcciones;
     private JFRegistrarAccion jfRegistrarAccion;
-    private JFDetalleAccion jfDetalleAccion;
     private Accion accion;
     private AccionAPI accionAPI;
 
-    public AccionController(AccionBD accionBD, JFAcciones jfAcciones, JFRegistrarAccion jfRegistrarAccion, JFDetalleAccion jfDetalleAccion, Accion accion, AccionAPI accionAPI) {
+    public AccionController(AccionBD accionBD, JFAcciones jfAcciones, JFRegistrarAccion jfRegistrarAccion, Accion accion, AccionAPI accionAPI) {
         this.jfAcciones = jfAcciones;
         this.accionBD = accionBD;
         this.jfRegistrarAccion = jfRegistrarAccion;
-        this.jfDetalleAccion = jfDetalleAccion;
         this.accion = accion;
         this.accionAPI = accionAPI;
 
         this.jfAcciones.jBRegistrarAcciones.addActionListener(this);
         this.jfRegistrarAccion.jBGuardarAccion.addActionListener(this);
         this.jfRegistrarAccion.jBSalirA.addActionListener(this);
-        this.jfDetalleAccion.jBSalirD.addActionListener(this);
 
-        this.jfAcciones.jTableAcciones.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int filaSeleccionada = jfAcciones.jTableAcciones.getSelectedRow();
-                if (filaSeleccionada != -1) {
-                    
-                    int idCompra = Integer.parseInt(jfAcciones.jTableAcciones.getValueAt(filaSeleccionada, 0).toString());
-                    Accion accionSeleccionada = new Accion();
-                    accionSeleccionada = accionBD.obtenerCompraPorId(idCompra);
-                    
-                    jfAcciones.dispose();
-                    jfDetalleAccion.setVisible(true);
-                    jfDetalleAccion.setLocationRelativeTo(null);
-                    
-                    jfDetalleAccion.jTNombreD.setText(String.valueOf(accionSeleccionada.getNombre_accion()));
-                    jfDetalleAccion.jTCantidadD.setText(String.valueOf(accionSeleccionada.getCantidad()));
-                    jfDetalleAccion.jTfechaCompraD.setText(String.valueOf(accionSeleccionada.getFecha_compra()));
-                    jfDetalleAccion.jTValorCompraD.setText(String.valueOf(accionSeleccionada.getValor()));
-                    jfDetalleAccion.jTFechaActualD.setText(accion.obtenerFechaActual());
-                    
-                    double valorActual = accionAPI.obtenerPrecioActual(jfDetalleAccion.jTNombreD.getText());
-                    double valorCompra = Double.parseDouble(jfDetalleAccion.jTValorCompraD.getText());
-                    int cantidad = Integer.parseInt(jfDetalleAccion.jTCantidadD.getText());
-                    double precioActualTotal = accion.valorActualTotal(cantidad, valorActual);
-                    jfDetalleAccion.jTValorActualD.setText(String.valueOf(precioActualTotal));
-                    double gananciaPerdida = accion.gananciaPerdida(precioActualTotal, valorCompra);
-                    double gananciaPerdidaPorcentaje = accion.gananciaPerdidaPorcentaje(precioActualTotal, valorCompra);
-                    
-                    if (gananciaPerdida>=0) {
-                        jfDetalleAccion.jTGananciaA.setText(String.valueOf(gananciaPerdida));
-                        jfDetalleAccion.jTGananciaPorcentaje.setText(String.valueOf(gananciaPerdidaPorcentaje));
-                        jfDetalleAccion.jTPerdidaA.setText("0.0");
-                        jfDetalleAccion.jTPerdidaPorcentaje.setText("0.0");
-                    } else{
-                        jfDetalleAccion.jTPerdidaA.setText(String.valueOf(gananciaPerdida));
-                        jfDetalleAccion.jTPerdidaPorcentaje.setText(String.valueOf(gananciaPerdidaPorcentaje));
-                        jfDetalleAccion.jTGananciaA.setText("0.0");
-                        jfDetalleAccion.jTGananciaPorcentaje.setText("0.0");
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -110,8 +62,11 @@ public class AccionController implements ActionListener {
 
             if (accion.esCantidadValido(cantidadTexto)) {
                 int cantidad  = Integer.parseInt(cantidadTexto);
+                double precio_actual = accionAPI.obtenerPrecioActual(nombreAccion);
+                double ganancia_perdida = accion.gananciaPerdida(precio_actual, valor,cantidad);
+                double ganancia_perdida_porcentaje = accion.gananciaPerdidaPorcentaje(precio_actual, valor, cantidad);
                 
-                Accion nuevaAccion = new Accion(id, nombreAccion, fechaCompra, cantidad, valor);
+                Accion nuevaAccion = new Accion(id, nombreAccion, fechaCompra, cantidad, valor, precio_actual,ganancia_perdida,ganancia_perdida_porcentaje);
 
                 boolean registroExitoso = accionBD.registrarCompra(nuevaAccion);
                 if (registroExitoso) {
@@ -135,11 +90,6 @@ public class AccionController implements ActionListener {
             jfAcciones.setVisible(true);
             int id = Integer.parseInt(jfAcciones.jTMostrarID.getText());
             accionBD.mostrarCompras(jfAcciones.jTableAcciones, id);
-        }
-
-        if (e.getSource() == jfDetalleAccion.jBSalirD) {
-            jfDetalleAccion.dispose();
-            jfAcciones.setVisible(true);
         }
     }
 }
