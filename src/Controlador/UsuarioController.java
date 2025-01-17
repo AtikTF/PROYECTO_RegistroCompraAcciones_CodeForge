@@ -44,6 +44,7 @@ public class UsuarioController implements ActionListener {
                 accionBD.mostrarCompras(jfAcciones.jTableAcciones ,id);
                 jfLogin.dispose();
                 jfAcciones.setVisible(true);
+                jfAcciones.jTMostrarID.setVisible(false);
 
             } else {
                 JOptionPane.showMessageDialog(null, "Error en las credenciales");
