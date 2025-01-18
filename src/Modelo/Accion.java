@@ -203,7 +203,6 @@ public class Accion {
         int rowCount = modelo.getRowCount();
         List<Object[]> filas = new ArrayList<>();
 
-        // Copiar las filas de la tabla a una lista
         for (int i = 0; i < rowCount; i++) {
             Object[] fila = new Object[modelo.getColumnCount()];
             for (int j = 0; j < modelo.getColumnCount(); j++) {
@@ -212,14 +211,12 @@ public class Accion {
             filas.add(fila);
         }
 
-        // Ordenar las filas en orden descendente
         filas.sort((fila1, fila2) -> {
             double num1 = Double.parseDouble(fila1[columna].toString());
             double num2 = Double.parseDouble(fila2[columna].toString());
-            return Double.compare(num2, num1); // Se invierte el orden
+            return Double.compare(num2, num1);
         });
 
-        // Limpiar la tabla y volver a llenarla con los datos ordenados
         modelo.setRowCount(0);
         for (Object[] fila : filas) {
             modelo.addRow(fila);

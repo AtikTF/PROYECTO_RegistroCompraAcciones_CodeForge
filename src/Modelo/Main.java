@@ -5,6 +5,7 @@ import BD.UsuarioBD;
 import Controlador.UsuarioController;
 import Vista.JFAcciones;
 import Vista.JFLogin;
+import Vista.JFRegistro;
 
 public class Main {
 
@@ -15,9 +16,11 @@ public class Main {
         Usuario usuario = new Usuario();
         UsuarioBD usuarioBD = new UsuarioBD();
         AccionBD accionBD = new AccionBD();
-        UsuarioController usuarioController = new UsuarioController(jfLogin, jFAcciones, usuario, usuarioBD, accionBD);   
+        JFRegistro jfRegistro = new JFRegistro();
+        UsuarioController usuarioController = new UsuarioController(jfLogin, jFAcciones, usuario, usuarioBD, accionBD, jfRegistro);   
         usuarioController.iniciar();
         jfLogin.setVisible(true);
         jfLogin.setLocationRelativeTo(null);
+        jfRegistro.setLocationRelativeTo(null);
     }
 }

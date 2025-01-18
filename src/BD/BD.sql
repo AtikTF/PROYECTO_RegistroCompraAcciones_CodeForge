@@ -6,7 +6,9 @@ USE AccionesDB;
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre_usuario VARCHAR(50) NOT NULL UNIQUE,
-    contraseña VARCHAR(255) NOT NULL
+    contraseña VARCHAR(255) NOT NULL,
+    telefono VARCHAR(15) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE
 );
 
 -- Tabla de compras
