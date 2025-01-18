@@ -17,6 +17,9 @@ CREATE TABLE compras (
     fecha_compra DATE NOT NULL,
     cantidad INT NOT NULL,
     valor DECIMAL(10, 2) NOT NULL,
+    valor_actual DECIMAL(10, 2) NOT NULL,
+    ganancia_perdida DECIMAL(10,2) NOT NULL,
+    ganancia_perdida_porcentaje DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
         ON DELETE CASCADE ON UPDATE CASCADE
 );

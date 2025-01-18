@@ -46,7 +46,7 @@ public class JFRegistrarAccion extends javax.swing.JFrame {
 
         jTidU.setEditable(false);
 
-        jBSalirA.setText("Salir");
+        jBSalirA.setText("Volver");
 
         jLabel7.setText("(YYYY-MM-DD)");
 

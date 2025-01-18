@@ -6,9 +6,9 @@ import Modelo.Accion;
 import Modelo.AccionAPI;
 import Modelo.Usuario;
 import Vista.JFAcciones;
-import Vista.JFDetalleAccion;
 import Vista.JFLogin;
 import Vista.JFRegistrarAccion;
+import Vista.JFResumen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
@@ -45,6 +45,7 @@ public class UsuarioController implements ActionListener {
                 accionBD.mostrarCompras(jfAcciones.jTableAcciones ,id);
                 jfLogin.dispose();
                 jfAcciones.setVisible(true);
+                jfAcciones.jTMostrarID.setVisible(false);
 
             } else {
                 JOptionPane.showMessageDialog(null, "Error en las credenciales");
@@ -54,12 +55,12 @@ public class UsuarioController implements ActionListener {
 
     public void iniciar() {
         JFRegistrarAccion jfRegistrarAccion = new JFRegistrarAccion();
-        JFDetalleAccion jfDetalleAccion = new JFDetalleAccion();
         Accion accion = new Accion();
         AccionAPI accionAPI = new AccionAPI();
-        AccionController accionController = new AccionController(accionBD, jfAcciones, jfRegistrarAccion, jfDetalleAccion, accion, accionAPI);
+        JFResumen jfResumen = new JFResumen();
+        AccionController accionController = new AccionController(accionBD, jfAcciones, jfRegistrarAccion, accion, accionAPI, jfResumen);
         jfAcciones.setLocationRelativeTo(null);
         jfRegistrarAccion.setLocationRelativeTo(null);
-        jfDetalleAccion.setLocationRelativeTo(null);
+        jfResumen.setLocationRelativeTo(null);
     }
 }
