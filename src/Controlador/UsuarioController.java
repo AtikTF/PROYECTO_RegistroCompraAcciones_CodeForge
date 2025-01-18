@@ -8,6 +8,7 @@ import Modelo.Usuario;
 import Vista.JFAcciones;
 import Vista.JFLogin;
 import Vista.JFRegistrarAccion;
+import Vista.JFResumen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
@@ -56,8 +57,10 @@ public class UsuarioController implements ActionListener {
         JFRegistrarAccion jfRegistrarAccion = new JFRegistrarAccion();
         Accion accion = new Accion();
         AccionAPI accionAPI = new AccionAPI();
-        AccionController accionController = new AccionController(accionBD, jfAcciones, jfRegistrarAccion, accion, accionAPI);
+        JFResumen jfResumen = new JFResumen();
+        AccionController accionController = new AccionController(accionBD, jfAcciones, jfRegistrarAccion, accion, accionAPI, jfResumen);
         jfAcciones.setLocationRelativeTo(null);
         jfRegistrarAccion.setLocationRelativeTo(null);
+        jfResumen.setLocationRelativeTo(null);
     }
 }

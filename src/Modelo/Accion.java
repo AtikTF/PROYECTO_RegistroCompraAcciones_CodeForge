@@ -3,6 +3,10 @@ package Modelo;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Accion {
 
@@ -146,5 +150,79 @@ public class Accion {
         double valorCompraUnitario = valorCompra / cantidad;
         double porcentaje = ((valorActual - valorCompraUnitario) / valorCompraUnitario) * 100;
         return Math.round(porcentaje * 100.0) / 100.0;
+    }
+
+    public void ordenarAlfabetico(JTable tabla, int columna) {
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        int rowCount = modelo.getRowCount();
+        List<Object[]> filas = new ArrayList<>();
+
+        for (int i = 0; i < rowCount; i++) {
+            Object[] fila = new Object[modelo.getColumnCount()];
+            for (int j = 0; j < modelo.getColumnCount(); j++) {
+                fila[j] = modelo.getValueAt(i, j);
+            }
+            filas.add(fila);
+        }
+
+        filas.sort((fila1, fila2) -> fila1[columna].toString().compareToIgnoreCase(fila2[columna].toString()));
+
+        modelo.setRowCount(0);
+        for (Object[] fila : filas) {
+            modelo.addRow(fila);
+        }
+    }
+
+    public void ordenarAscendente(JTable tabla, int columna) {
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        int rowCount = modelo.getRowCount();
+        List<Object[]> filas = new ArrayList<>();
+
+        for (int i = 0; i < rowCount; i++) {
+            Object[] fila = new Object[modelo.getColumnCount()];
+            for (int j = 0; j < modelo.getColumnCount(); j++) {
+                fila[j] = modelo.getValueAt(i, j);
+            }
+            filas.add(fila);
+        }
+
+        filas.sort((fila1, fila2) -> {
+            double num1 = Double.parseDouble(fila1[columna].toString());
+            double num2 = Double.parseDouble(fila2[columna].toString());
+            return Double.compare(num1, num2);
+        });
+
+        modelo.setRowCount(0);
+        for (Object[] fila : filas) {
+            modelo.addRow(fila);
+        }
+    }
+
+    public void ordenarDescendente(JTable tabla, int columna) {
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        int rowCount = modelo.getRowCount();
+        List<Object[]> filas = new ArrayList<>();
+
+        // Copiar las filas de la tabla a una lista
+        for (int i = 0; i < rowCount; i++) {
+            Object[] fila = new Object[modelo.getColumnCount()];
+            for (int j = 0; j < modelo.getColumnCount(); j++) {
+                fila[j] = modelo.getValueAt(i, j);
+            }
+            filas.add(fila);
+        }
+
+        // Ordenar las filas en orden descendente
+        filas.sort((fila1, fila2) -> {
+            double num1 = Double.parseDouble(fila1[columna].toString());
+            double num2 = Double.parseDouble(fila2[columna].toString());
+            return Double.compare(num2, num1); // Se invierte el orden
+        });
+
+        // Limpiar la tabla y volver a llenarla con los datos ordenados
+        modelo.setRowCount(0);
+        for (Object[] fila : filas) {
+            modelo.addRow(fila);
+        }
     }
 }
