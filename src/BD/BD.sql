@@ -6,7 +6,9 @@ USE AccionesDB;
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre_usuario VARCHAR(50) NOT NULL UNIQUE,
-    contraseña VARCHAR(255) NOT NULL
+    contraseña VARCHAR(255) NOT NULL,
+    telefono VARCHAR(15) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE
 );
 
 -- Tabla de compras
@@ -23,13 +25,5 @@ CREATE TABLE compras (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
-
--- Insertar un usuario en la tabla usuarios
-INSERT INTO usuarios (nombre_usuario, contraseña) 
-VALUES ('atik', 'atik123');
-
--- Insertar una compra
-INSERT INTO compras (id_usuario, nombre_accion, fecha_compra, cantidad, valor)
-VALUES (1, 'AAPL', '2024-11-18', 10, 150.75);
 
 Select * from compras
