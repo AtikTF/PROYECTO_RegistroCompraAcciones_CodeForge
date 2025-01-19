@@ -3,11 +3,13 @@ package Controlador;
 import BD.AccionBD;
 import Modelo.Accion;
 import Modelo.AccionAPI;
+import Modelo.ExportarExcel;
 import Vista.JFAcciones;
 import Vista.JFRegistrarAccion;
 import Vista.JFResumen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 
 public class AccionController implements ActionListener {
@@ -34,6 +36,7 @@ public class AccionController implements ActionListener {
         this.jfAcciones.jCBOrdenamiento.addActionListener(this);
         this.jfAcciones.jBResumen.addActionListener(this);
         this.jfResumen.jBVolverResumen.addActionListener(this);
+        this.jfAcciones.jBExportarExcel.addActionListener(this);
     }
 
     @Override
@@ -101,23 +104,36 @@ public class AccionController implements ActionListener {
         if (e.getSource() == jfAcciones.jBOrdenar) {
             int opcionSeleccionada = jfAcciones.jCBOrdenamiento.getSelectedIndex();
             switch (opcionSeleccionada) {
-                case 0 -> accion.ordenarAlfabetico(jfAcciones.jTableAcciones, 2);
-                case 1 -> accion.ordenarAscendente(jfAcciones.jTableAcciones, 7);
-                case 2 -> accion.ordenarDescendente(jfAcciones.jTableAcciones, 7);
-                default -> JOptionPane.showMessageDialog(null, "Seleccionar una opción de ordenamiento");
+                case 0 ->
+                    accion.ordenarAlfabetico(jfAcciones.jTableAcciones, 2);
+                case 1 ->
+                    accion.ordenarAscendente(jfAcciones.jTableAcciones, 7);
+                case 2 ->
+                    accion.ordenarDescendente(jfAcciones.jTableAcciones, 7);
+                default ->
+                    JOptionPane.showMessageDialog(null, "Seleccionar una opción de ordenamiento");
             }
         }
-        
+
         if (e.getSource() == jfResumen.jBVolverResumen) {
             jfResumen.dispose();
             jfAcciones.setVisible(true);
         }
-        
+
         if (e.getSource() == jfAcciones.jBResumen) {
             jfAcciones.setVisible(false);
             jfResumen.setVisible(true);
             int id = Integer.parseInt(jfAcciones.jTMostrarID.getText());
             accionBD.mostrarComprasAgrupadas(jfResumen.jTableResumen, id);
+        }
+
+        if (e.getSource() == jfAcciones.jBExportarExcel) {
+            ExportarExcel exportar = new ExportarExcel();
+            try {
+                exportar.exportarExcel(jfAcciones.jTableAcciones);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Error al exportar a Excel");
+            }
         }
     }
 }
