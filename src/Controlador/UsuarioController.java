@@ -52,6 +52,8 @@ public class UsuarioController implements ActionListener {
                 jfLogin.dispose();
                 jfAcciones.setVisible(true);
                 jfAcciones.jTMostrarID.setVisible(false);
+                jfLogin.jTUsuario.setText("");
+                jfLogin.jPContrasenia.setText("");
 
             } else {
                 JOptionPane.showMessageDialog(null, "Error en las credenciales");
@@ -112,7 +114,7 @@ public class UsuarioController implements ActionListener {
         Accion accion = new Accion();
         AccionAPI accionAPI = new AccionAPI();
         JFResumen jfResumen = new JFResumen();
-        AccionController accionController = new AccionController(accionBD, jfAcciones, jfRegistrarAccion, accion, accionAPI, jfResumen);
+        AccionController accionController = new AccionController(accionBD, jfAcciones, jfRegistrarAccion, accion, accionAPI, jfResumen, jfLogin);
         jfAcciones.setLocationRelativeTo(null);
         jfRegistrarAccion.setLocationRelativeTo(null);
         jfResumen.setLocationRelativeTo(null);

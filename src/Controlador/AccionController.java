@@ -5,6 +5,7 @@ import Modelo.Accion;
 import Modelo.AccionAPI;
 import Modelo.ExportarExcel;
 import Vista.JFAcciones;
+import Vista.JFLogin;
 import Vista.JFRegistrarAccion;
 import Vista.JFResumen;
 import java.awt.event.ActionEvent;
@@ -20,14 +21,16 @@ public class AccionController implements ActionListener {
     private Accion accion;
     private AccionAPI accionAPI;
     private JFResumen jfResumen;
+    private JFLogin jfLogin;
 
-    public AccionController(AccionBD accionBD, JFAcciones jfAcciones, JFRegistrarAccion jfRegistrarAccion, Accion accion, AccionAPI accionAPI, JFResumen jfResumen) {
+    public AccionController(AccionBD accionBD, JFAcciones jfAcciones, JFRegistrarAccion jfRegistrarAccion, Accion accion, AccionAPI accionAPI, JFResumen jfResumen, JFLogin jfLogin) {
         this.jfAcciones = jfAcciones;
         this.accionBD = accionBD;
         this.jfRegistrarAccion = jfRegistrarAccion;
         this.accion = accion;
         this.accionAPI = accionAPI;
         this.jfResumen = jfResumen;
+        this.jfLogin = jfLogin;
 
         this.jfAcciones.jBRegistrarAcciones.addActionListener(this);
         this.jfRegistrarAccion.jBGuardarAccion.addActionListener(this);
@@ -37,6 +40,7 @@ public class AccionController implements ActionListener {
         this.jfAcciones.jBResumen.addActionListener(this);
         this.jfResumen.jBVolverResumen.addActionListener(this);
         this.jfAcciones.jBExportarExcel.addActionListener(this);
+        this.jfAcciones.jBSalir.addActionListener(this);
     }
 
     @Override
@@ -131,9 +135,16 @@ public class AccionController implements ActionListener {
             ExportarExcel exportar = new ExportarExcel();
             try {
                 exportar.exportarExcel(jfAcciones.jTableAcciones);
+                JOptionPane.showMessageDialog(null, "Datos exportados correctamente");
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Error al exportar a Excel");
             }
+        }
+        
+        if (e.getSource() == jfAcciones.jBSalir) {
+            jfAcciones.dispose();
+            JOptionPane.showMessageDialog(null, "Cierre de Sesión exitoso");
+            jfLogin.setVisible(true);
         }
     }
 }
